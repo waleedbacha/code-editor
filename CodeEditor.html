@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>👨🏼‍💻 Code Editor</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style type="text/css">
+    body{
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+    }
+
+    #header{
+        height:30px ;
+        padding: 2px;
+        background-color: #7a7676;
+    }
+
+    #logo{
+        float: left;
+        font-weight: bold;
+        padding: 5px;
+    }
+
+    #buttonContainer{
+      width: 300px;
+      margin: 0 auto;
+    }
+
+    .toggle-button{
+        background-color: #a79d9d;
+        float: left;
+        padding: 5px;
+        border: 1px solid rgb(255, 255, 255);
+        border-right: none;
+    }
+
+    .toggle-button:hover{
+    cursor: pointer;
+    }
+    .active {
+        background-color: paleturquoise;
+    }
+    .highlighted-button{
+        background-color: aliceblue;
+    }
+    .hidden{
+        display: none;
+    }
+    .panel{
+        float: left;
+    }
+    iframe{
+        border:none;
+    }
+    textarea{
+        border-top: none;
+        resize: none;
+    }
+   
+    #output{
+    border-right: 1px solid rgb(255, 255, 255);
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    } 
+
+    #html {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius:5px ;
+    }
+  
+    
+    </style>
+</head>
+
+
+<body>
+<div id="header">
+<div id="logo">👨🏼‍💻 Code player</div>
+<div id="buttonContainer">
+<div class="toggle-button active" id="html">HTML</div>
+<div class="toggle-button" id="css">CSS</div>
+<div class="toggle-button" id="javascript">JavaScript</div>
+<div class="toggle-button active" id="output">Output</div>
+
+</div>
+</div>
+
+<div id="bodyContainer">
+ <textarea class="panel" id="html-panel"><h1>❤️Welcome To My Code Player❤️</h1><p>Made with ❤️</p></textarea>
+ <textarea class="panel hidden" id="css-panel"> h1  {color: red;} </textarea>
+ <textarea class="panel hidden" id="javascript-panel"> </textarea>
+ <iframe   class="panel" id="output-panel"></iframe>   
+</div> 
+<script>
+function outputPanel() {
+ $("iframe").contents().find("html").html("<html><head><style type ='text/css'>" + $("#css-panel").val() + "</style><body>" + $("#html-panel").val()  + "</body></html>" );
+ document.getElementById("output-panel").contentWindow.eval($("#javascript-panel").val());   
+
+};
+
+
+$(".toggle-button").hover(function(){
+$(this).addClass("highlighted-button");
+
+},function(){
+    $(this).removeClass("highlighted-button");
+});
+$(".toggle-button").click(function(){
+    $(this).toggleClass("active");
+    $(this).removeClass("highlighted-button");
+    var panelID = $(this).attr("id") + "-panel";
+    $("#" + panelID).toggleClass("hidden");
+    var activePanels = 4 - $(".hidden").length;
+    $(".panel").width(($(window).width() / activePanels) - 10);
+
+});
+
+$(".panel").height($(window).height() - $("#header").height() - 15);
+$(".panel").width(($(window).width() / 2) - 10);
+outputPanel();
+$("textarea").on('change keyup paste', function() {
+outputPanel();
+ });
+
+</script>
+</body>
+</html>
